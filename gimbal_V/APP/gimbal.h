@@ -57,9 +57,9 @@ typedef struct
   
   gimbal_motor_t motor_gimbal[5];          //云台电机数据
   
-	pid_type_def motor_speed_pid[4];             //云台电机速度pid
+	pid_type_def motor_speed_pid[5];             //云台电机速度pid
  
-	pid_type_def motor_angle_pid[4];          //云台电机角度pid
+	pid_type_def motor_angle_pid[5];          //云台电机角度pid
 
   fp32 angleset_yaw;
   fp32 angleset_pitch;

@@ -1,7 +1,7 @@
 Dependencies for Project 'gimbal', Target 'gimbal': (DO NOT MODIFY !)
 CompilerVersion: 5060422::V5.06 update 4 (build 422)::ARMCC
 F (startup_stm32f407xx.s)(0x65E46557)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 539" --pd "_RTE_ SETA 1" --pd "STM32F407xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32f407xx.lst --xref -o hero_c2\startup_stm32f407xx.o --depend hero_c2\startup_stm32f407xx.d)
-F (../Core/Src/main.c)(0x65E5B9EF)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\main.o --omf_browse hero_c2\main.crf --depend hero_c2\main.d)
+F (../Core/Src/main.c)(0x65E7124A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\main.o --omf_browse hero_c2\main.crf --depend hero_c2\main.d)
 I (../Core/Inc/main.h)(0x65E28578)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65995049)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x65E46555)
@@ -50,12 +50,12 @@ I (../APP/remote_control.h)(0x657F1F4B)
 I (../APP/struct_typedef.h)(0x657B0F9D)
 I (../BSP/bsp_rc.h)(0x657B0F9D)
 I (../APP/CAN_receive.h)(0x659E2003)
-I (../CONPONENT/module/can_comm.h)(0x65E5B413)
-I (../APP/gimbal.h)(0x65E43FB8)
+I (../CONPONENT/module/can_comm.h)(0x65E70E36)
+I (../APP/gimbal.h)(0x65E5D057)
 I (../BSP/pid.h)(0x65E43B78)
 I (../BSP/bsp_imu.h)(0x65E08886)
 I (../BSP/delay.h)(0x657D09A0)
-I (../CONPONENT/module/mode.h)(0x65E5B413)
+I (../CONPONENT/module/mode.h)(0x65E70E36)
 F (../Core/Src/gpio.c)(0x65E09538)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\gpio.o --omf_browse hero_c2\gpio.crf --depend hero_c2\gpio.d)
 I (../Core/Inc/gpio.h)(0x65A10F38)
 I (../Core/Inc/main.h)(0x65E28578)
@@ -1206,7 +1206,7 @@ I (..\BSP\ist8310driver.h)(0x657D09A0)
 I (..\BSP\pid.h)(0x65E43B78)
 I (..\BSP\delay.h)(0x657D09A0)
 I (..\BSP\MahonyAHRS.h)(0x657D09A0)
-I (../APP/gimbal.h)(0x65E43FB8)
+I (../APP/gimbal.h)(0x65E5D057)
 I (../APP/struct_typedef.h)(0x657B0F9D)
 I (../APP/CAN_receive.h)(0x659E2003)
 I (../APP/remote_control.h)(0x657F1F4B)
@@ -1440,8 +1440,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x65995049)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65995049)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65995049)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65995049)
-F (..\APP\gimbal.c)(0x65E43B77)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\gimbal.o --omf_browse hero_c2\gimbal.crf --depend hero_c2\gimbal.d)
-I (..\APP\gimbal.h)(0x65E43FB8)
+F (..\APP\gimbal.c)(0x65E5D057)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\gimbal.o --omf_browse hero_c2\gimbal.crf --depend hero_c2\gimbal.d)
+I (..\APP\gimbal.h)(0x65E5D057)
 I (..\APP\struct_typedef.h)(0x657B0F9D)
 I (..\APP\CAN_receive.h)(0x659E2003)
 I (../BSP/pid.h)(0x65E43B78)
@@ -1532,13 +1532,13 @@ I (D:\Keil_5\ARM\ARMCC\include\math.h)(0x57F606B6)
 F (..\BSP\user_lib.c)(0x65E085F0)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\user_lib.o --omf_browse hero_c2\user_lib.crf --depend hero_c2\user_lib.d)
 I (..\BSP\user_lib.h)(0x65E085F2)
 I (..\BSP\struct_typedef.h)(0x657D09A0)
-F (..\CONPONENT\module\can_comm.c)(0x65E5B413)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\can_comm.o --omf_browse hero_c2\can_comm.crf --depend hero_c2\can_comm.d)
-I (..\CONPONENT\module\can_comm.h)(0x65E5B413)
+F (..\CONPONENT\module\can_comm.c)(0x65E70E36)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\can_comm.o --omf_browse hero_c2\can_comm.crf --depend hero_c2\can_comm.d)
+I (..\CONPONENT\module\can_comm.h)(0x65E70E36)
 I (../BSP/struct_typedef.h)(0x657D09A0)
 I (../APP/remote_control.h)(0x657F1F4B)
 I (../APP/struct_typedef.h)(0x657B0F9D)
 I (../BSP/bsp_rc.h)(0x657B0F9D)
-I (../APP/gimbal.h)(0x65E43FB8)
+I (../APP/gimbal.h)(0x65E5D057)
 I (../APP/CAN_receive.h)(0x659E2003)
 I (../BSP/pid.h)(0x65E43B78)
 I (../Core/Inc/main.h)(0x65E28578)
@@ -1577,8 +1577,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65995049)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65995049)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65995049)
 F (..\BSP\struct_typedef.h)(0x657D09A0)()
-F (..\CONPONENT\module\mode.c)(0x65E5B413)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\mode.o --omf_browse hero_c2\mode.crf --depend hero_c2\mode.d)
-I (..\CONPONENT\module\mode.h)(0x65E5B413)
+F (..\CONPONENT\module\mode.c)(0x65E71259)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../BSP -I ../APP -I ../CONPONENT/module -I ../CONPONENT/controller -I ../CONPONENT/algorithm -I ../CONPONENT/algorithm/Include-I.\RTE\_gimbal-ID:\Keil_5\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\Keil_5\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o hero_c2\mode.o --omf_browse hero_c2\mode.crf --depend hero_c2\mode.d)
+I (..\CONPONENT\module\mode.h)(0x65E70E36)
 I (../APP/remote_control.h)(0x657F1F4B)
 I (../APP/struct_typedef.h)(0x657B0F9D)
 I (../BSP/bsp_rc.h)(0x657B0F9D)

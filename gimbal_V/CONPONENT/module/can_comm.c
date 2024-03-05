@@ -16,11 +16,13 @@ static CAN_TxHeaderTypeDef  UNLOAD_tx_message;
 static CAN_TxHeaderTypeDef  INABILITY_tx_message;
 static CAN_TxHeaderTypeDef  NUM_tx_message;
 static CAN_TxHeaderTypeDef  IMU_tx_message;
+static CAN_TxHeaderTypeDef  MODE_tx_message;
 
 
 static uint8_t  XYZ_can_send_data[8];
 static uint8_t  TY_can_send_data[8];
 static uint8_t  IMU_can_send_data[8];
+static uint8_t  MODE_can_send_data[8];
 
 
 
@@ -44,7 +46,7 @@ void CAN_COMM_XYZ(int16_t X,int16_t Y,int16_t Z,int16_t IMU_Y)//X，Y，Z，IMU_
     HAL_CAN_AddTxMessage(&hcan2, &XYZ_tx_message, XYZ_can_send_data, &send_mail_box);
 }
 
-void CAN_COMM_T_MODE(int16_t TRAY,int16_t MODE)//拨弹盘，模式选择
+void CAN_COMM_T_MODE(int16_t TRAY,int16_t s1,int16_t s2)//拨弹盘，模式选择
 {
     uint32_t send_mail_box;
     TY_tx_message.StdId = 0x002;
@@ -53,8 +55,8 @@ void CAN_COMM_T_MODE(int16_t TRAY,int16_t MODE)//拨弹盘，模式选择
     TY_tx_message.DLC = 0x08;
     TY_can_send_data[0] = TRAY >> 8;
     TY_can_send_data[1] = TRAY;
-    TY_can_send_data[2] = MODE >> 8;
-    TY_can_send_data[3] = MODE;
+    TY_can_send_data[2] = s1;
+    TY_can_send_data[3] = s2;
     TY_can_send_data[4] = 0;
     TY_can_send_data[5] = 0;
     TY_can_send_data[6] = 0;
@@ -63,6 +65,7 @@ void CAN_COMM_T_MODE(int16_t TRAY,int16_t MODE)//拨弹盘，模式选择
     HAL_CAN_AddTxMessage(&hcan2, &TY_tx_message, TY_can_send_data, &send_mail_box);
 
 }
+
 
 
 
@@ -125,15 +128,17 @@ void CANTX_XYZ_IMU(RC_ctrl_t *rc_data,gimbal_y_t *gimbal_y,int16_t IMU_Y)
 	CAN_COMM_XYZ(x,y,z,num_IMU);
 }
 
-fp32 yaw,tray;
-void CANTX_T_MODE(RC_ctrl_t *rc_data,int16_t MODE)
+fp32 yaw,tray,s1,s2;
+
+void CANTX_T_MODE(RC_ctrl_t *rc_data)
 {
 	
 	
 	
 	tray = rc_data->rc.ch[4];
-
-	CAN_COMM_T_MODE(tray,MODE);
+	s1 = rc_data->rc.s[0];
+	s2 = rc_data->rc.s[1];
+	CAN_COMM_T_MODE(tray,s1,s2);
 }
 
 

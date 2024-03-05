@@ -13,10 +13,11 @@ fp32 pit_x,pit_y,speed_a;//0.51,0.51,10000.0f
 void gimbal_rc_to_ctrl_vector(gimbal_move_t *gimbal_rc_to_ctrl_vector,fp32 *FRIC,fp32 *PITCH_SET)
 {
 	
-	static fp32 PITCH_set,FRIC_set;
+	static fp32 PITCH_set,FRIC_set,YAW_ch;
 	
 	PITCH_ch = gimbal_rc_to_ctrl_vector->gimbal_RC->rc.s[0];
 	FRIC_ch = gimbal_rc_to_ctrl_vector->gimbal_RC->rc.ch[4];
+	YAW_ch = gimbal_rc_to_ctrl_vector->gimbal_RC->rc.ch[0];
 
     if(PITCH_ch == 1)
 	{
@@ -53,9 +54,13 @@ void gimbal_rc_to_ctrl_vector(gimbal_move_t *gimbal_rc_to_ctrl_vector,fp32 *FRIC
       {  FRIC_set = 6000.0f;
         
       }
+	 
+	  
+	  
      watch_pitch_set = PITCH_set;
     *PITCH_SET = PITCH_set;
     *FRIC = FRIC_set;
+	 
 }
 
 fp32 deadband_anglepid_out(fp32 anglepid_out)
@@ -108,7 +113,7 @@ void gimbal_rc_to_set(gimbal_move_t *gimbal_rc_set)
 
     gimbal_rc_set->fric_speedset = FRIC_SET;
     gimbal_rc_set->angleset_pitch = PITCH_SET;
-
+	
 }
 
 void gimbal_init(gimbal_move_t *gimbal_init)

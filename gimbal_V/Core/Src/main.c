@@ -72,6 +72,8 @@ void SystemClock_Config(void);
 extern MODE_t Mode;
 extern gimbal_y_t gimbal_y;
 extern gimbal_p_t gimbal_p;
+extern gimbal_move_t gimbal_move;
+
 extern RC_ctrl_t rc_data;
 int num_flag = 0,IMU_cnt = 0,start_flag = 0,MS_Count;
 int speed_g1,speed_g2,speed_g3;
@@ -82,10 +84,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
 	if (htim == &htim2)
     {	
-		
-		
-		
-
 			MS_Count++;
 		if(IMU_cnt > 3)
 			{
@@ -103,12 +101,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				if(start_flag == 0)
 					IMU_cnt++;
 			}
+		mode_select(&rc_data);
+		CANTX_T_MODE(&rc_data);
 
-		CANTX_T_MODE(&rc_data,mode_s);//拨弹盘数据发送
-			
-//			gimbal_rc_to_set(&gimbal_move);//遥控器数据传给云台电机
+				
+
+				;
+//		gimbal_rc_to_set(&gimbal_move);//遥控器数据传给云台电机
 //		gimbal_ctrl_loop(&gimbal_move);//云台电机闭环控制
-//        CAN_CMD_GIMBAL(gimbal_move.motor_gimbal[1].give_current,gimbal_move.motor_gimbal[2].give_current,gimbal_move.motor_gimbal[3].give_current);
+//		
+			
+
+//       CAN_CMD_GIMBAL(gimbal_move.motor_gimbal[1].give_current,gimbal_move.motor_gimbal[2].give_current,gimbal_move.motor_gimbal[3].give_current);
 //      num_flag = mode_select(&rc_data);
 //     CAN_COMM_num(num_flag);
 //      gimbal_rc_to_set(&gimbal_move);//遥控器数据传给云台电机

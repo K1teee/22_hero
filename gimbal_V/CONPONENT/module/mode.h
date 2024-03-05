@@ -5,10 +5,10 @@
 typedef enum
 {
   
-    CHASSIS_FOLLOW_GIMBAL = 0, //云台随动
-	TOP_ANGLE,       //小陀螺
-	
-	ZERO_FORCE,   //无力状态
+    HANGING = 0, //云台随动
+	FOLLOW,       //小陀螺
+	TOP_ANGLE,   //无力状态
+	ZERO_FORCE,
 } MODE_t;
 
 extern void mode_select(RC_ctrl_t *rc_data);
