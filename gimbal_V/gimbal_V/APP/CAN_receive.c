@@ -12,7 +12,8 @@ void  get_motor_measure(motor_measure_t *ptr,uint8_t *data)
     (ptr)->ecd = (uint16_t)((data)[0] << 8 | (data)[1]);            
 	(ptr)->speed_rpm  = (int16_t)((data)[2]<<8 | (data)[3]);     							
 	(ptr)->given_current = (uint16_t)((data)[4] << 8 | (data)[5]);  
-    (ptr)->temperate = (data)[6];                                   
+    (ptr)->temperate = (data)[6];  
+	(ptr)->speed_rad = (ptr)->speed_rpm*6.0f;
 }
 
 //电机转动角度更新
@@ -51,8 +52,17 @@ static motor_measure_t motor_gimbal[7];
 
 static CAN_TxHeaderTypeDef  gmibal_tx_message;
 
-static uint8_t              YAW_can_send_data[8];//YAW轴电机
-static uint8_t              gimbal_can_send_data[8];//YAW轴电机
+static CAN_TxHeaderTypeDef  pit_tx_message;
+
+static CAN_TxHeaderTypeDef  f1f2_tx_message;
+
+
+static uint8_t              gimbal_can_send_data[8];
+
+static uint8_t              pit_can_send_data[8];
+
+static uint8_t              f1f2_can_send_data[8];
+
 
 //接受电机数据
 int rxup_flag = 0;
@@ -69,9 +79,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		switch (rx_header.StdId)
 		{
 			
-			case CAN_YAW_MOTOR_ID:{get_motor_measure(&motor_gimbal[0], rx_data);
-					update_angle(&motor_gimbal[0]);break;}//0x20B
-			
+
 			case CAN_PIT_MOTOR_ID:{get_motor_measure(&motor_gimbal[1], rx_data);
 					update_angle(&motor_gimbal[1]);break;}//0x203
 			
@@ -99,26 +107,46 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	}
 }
 
-int watch_can;
-void CAN_CMD_YAW(int16_t YAW)//YAW轴控制，英雄yaw是6020电机
+
+int watch_can_2;
+
+void CAN_CMD_PIT(int16_t PITCH)//tray，pitch轴，shoot控制
 {
     uint32_t send_mail_box;
-    gmibal_tx_message.StdId = 0x1FF;
-    gmibal_tx_message.IDE = CAN_ID_STD;
-    gmibal_tx_message.RTR = CAN_RTR_DATA;
-    gmibal_tx_message.DLC = 0x08;
-    YAW_can_send_data[0] =  0;
-    YAW_can_send_data[1] =  0;
-    YAW_can_send_data[2] = 0;
-    YAW_can_send_data[3] = 0;
-    YAW_can_send_data[4] = YAW>>8;
-    YAW_can_send_data[5] = YAW;
-    YAW_can_send_data[6] = 0;
-    YAW_can_send_data[7] = 0;
+    pit_tx_message.StdId = 0x200;
+    pit_tx_message.IDE = CAN_ID_STD;
+    pit_tx_message.RTR = CAN_RTR_DATA;
+    pit_tx_message.DLC = 0x08;
+    pit_can_send_data[0] = 0;
+    pit_can_send_data[1] = 0;
+    pit_can_send_data[2] = 0;
+    pit_can_send_data[3] = 0;
+    pit_can_send_data[4] = PITCH >> 8;
+    pit_can_send_data[5] = PITCH;
+    pit_can_send_data[6] = 0;
+    pit_can_send_data[7] = 0;
 	
-    watch_can = HAL_CAN_AddTxMessage(&CHASSIS_CAN, &gmibal_tx_message, YAW_can_send_data, &send_mail_box);
+    HAL_CAN_AddTxMessage(&CHASSIS_CAN, &pit_tx_message, pit_can_send_data, &send_mail_box);
 }
-int watch_can_2;
+
+void CAN_CMD_F1F2(int16_t FRIC_1,int16_t FRIC_2)//tray，pitch轴，shoot控制
+{
+    uint32_t send_mail_box;
+    f1f2_tx_message.StdId = 0x200;
+    f1f2_tx_message.IDE = CAN_ID_STD;
+    f1f2_tx_message.RTR = CAN_RTR_DATA;
+    f1f2_tx_message.DLC = 0x08;
+    f1f2_can_send_data[0] = FRIC_1>>8;
+    f1f2_can_send_data[1] = FRIC_1;
+    f1f2_can_send_data[2] = FRIC_2>>8;
+    f1f2_can_send_data[3] = FRIC_2;
+    f1f2_can_send_data[4] = 0;
+    f1f2_can_send_data[5] = 0;
+    f1f2_can_send_data[6] = 0;
+    f1f2_can_send_data[7] = 0;
+	
+    HAL_CAN_AddTxMessage(&CHASSIS_CAN, &f1f2_tx_message, f1f2_can_send_data, &send_mail_box);
+}
 
 void CAN_CMD_GIMBAL(int16_t PITCH,int16_t FRIC_1,int16_t FRIC_2)//tray，pitch轴，shoot控制
 {

@@ -308,8 +308,9 @@ void INS_task(void)
         get_angle(INS_quat, INS_angle + INS_YAW_ADDRESS_OFFSET, INS_angle + INS_PITCH_ADDRESS_OFFSET, INS_angle + INS_ROLL_ADDRESS_OFFSET);
 		
 		gimbal_y.IMU_actualangle = INS_angle[0] / (2 * 3.141590f) * 360.0f;
-		gimbal_p.IMU_actualangle = -1.00f*INS_angle[1]/(2*3.141590f)*360.0f;
-		gimbal_r.IMU_actualangle =  -1.00f*INS_angle[2]/(2*3.141590f)*360.0f;
+		gimbal_p.IMU_actualangle = -1.00f*INS_angle[2]/(2*3.141590f)*360.0f;
+		gimbal_p.IMU_actualspeed = 1.00f*INS_gyro[1];
+		
 		
 }
 	

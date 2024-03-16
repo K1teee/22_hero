@@ -1,4 +1,5 @@
 #include "math.h"
+#include "stdint.h"
 /**
   * @brief         绝对值函数，用来获取绝对值
   * @param[a]      原始数据

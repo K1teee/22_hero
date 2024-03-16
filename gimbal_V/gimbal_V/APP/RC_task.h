@@ -41,10 +41,10 @@
 //冲锋模式时的控制范围
 #define KEY_PITCH_ANGLE_MAXX_RUN 2
 #define KEY_PITCH_ANGLE_MINN_RUN -2
-#define KEY_X_SPEED_MAXX 300
-#define KEY_X_SPEED_MINN -300
-#define KEY_Y_SPEED_MAXX 300
-#define KEY_Y_SPEED_MINN -300
+#define KEY_X_SPEED_MAXX -600
+#define KEY_X_SPEED_MINN 600
+#define KEY_Y_SPEED_MAXX -600
+#define KEY_Y_SPEED_MINN 600
 
 
 #define KEY_YAW_ANGLE_MAXX_RUN 4
@@ -63,8 +63,9 @@ typedef enum{
 
 void remote_control_data(void);
 void key_control_data(void);
-void control_mode_judge(void);
+extern void control_mode_judge(void);
 
+extern void CH_TRANS(void);
 
 extern KEY_CONTROL KEY_MODE;
 

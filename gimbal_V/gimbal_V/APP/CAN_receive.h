@@ -39,6 +39,8 @@ typedef struct
 	
 	float angle_offset;//零点
 	
+	float speed_rad;
+	
 } motor_measure_t;
 
 
@@ -51,6 +53,10 @@ extern void CAN_CMD_YAW(int16_t YAW);
 extern void CAN_CMD_CHASSIS(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4);
 
 extern void  get_motor_measure(motor_measure_t *ptr,uint8_t *data); 
+
+extern void CAN_CMD_PIT(int16_t PITCH);//pitch控制
+
+extern void CAN_CMD_F1F2(int16_t FRIC_1,int16_t FRIC_2);//shoot控制
 
 
 extern const motor_measure_t *get_gimbal_motor_measure_point(uint8_t i);

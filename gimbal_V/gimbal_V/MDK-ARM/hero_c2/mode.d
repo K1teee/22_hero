@@ -61,3 +61,4 @@ hero_c2\mode.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
 hero_c2\mode.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
 hero_c2\mode.o: D:\Keil_5\ARM\ARMCC\Bin\..\include\stdbool.h
 hero_c2\mode.o: ../APP/Vision_Task.h
+hero_c2\mode.o: ../APP/RC_task.h

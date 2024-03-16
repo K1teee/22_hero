@@ -5,12 +5,19 @@
 #include "math.h"
 #include "Vision_Task.h"        
 #include "can_comm.h"
+#include "mode.h"
 
 #include "can_receive.h"
 
 extern shoot_task_t rc_shoot;
 
+extern RC_ctrl_t rc_data;
+
 extern shoot_t shoot;
+
+extern tray_mode_t tray_mode;
+
+extern VISION_MODE vision_mode;
 
 
 int vision_switch_flag=0;//视觉开关的标识符，用来实现拨一下开关视觉，再播一下开关视觉的功能 
@@ -37,47 +44,25 @@ extern int Gimbal_Precision_Mode;
 extern int Last_Gimbal_Precision_Mode;
 extern int Gimbal_Precision_Activated_Flag;
 extern int Gimbal_Precision_Inactivated_Flag;
+extern int Vision_Precision_Mode;
 
 
 void control_mode_judge(void)
 {
-	if(rc_ctrl.rc.ch[0]!=0||rc_ctrl.rc.ch[1]!=0||rc_ctrl.rc.ch[2]!=0||rc_ctrl.rc.ch[3]!=0||rc_ctrl.rc.ch[4]!=0)
+	if(rc_data.rc.ch[0]!=0||rc_data.rc.ch[1]!=0||rc_data.rc.ch[2]!=0||rc_data.rc.ch[3]!=0||rc_data.rc.ch[4]!=0)
 		KEY_MODE=KEY_OFF;
 	if(KEY_board||MOUSE_x||MOUSE_y||MOUSE_z)
 		KEY_MODE=KEY_ON;
 }
 int shoot_true=0,shoot_true_cnt=0;
-//void remote_control_data(void)
-//{
 
-//	
-//	if(switch_is_up(SW_R))//射击
-//	{
-//		
-//		
-//	}
 
-//	if(switch_is_up(SW_L) ) //小陀螺模式
-//	{
-//		
-//	}
 
-//	if(switch_is_mid(SW_L) ) //随动
-//	{
-//		
-//		
-//	}
-//	if(switch_is_down(SW_L)) //脱力状态
-//	{
-//		
-//		
-//	}
-//	
-//	
-//	
-//}
-int R_flag=0,R_cnt=0;
 
+
+
+int R_flag=0,R_cnt=0,flag_cnt = 2;
+int mode_s1,mode_s2;
 void key_control_data(void)
 {	
 
@@ -90,17 +75,18 @@ void key_control_data(void)
 	if(KEY_board & KEY_PRESSED_OFFSET_SHIFT)
 	{
 		if(KEY_board & KEY_PRESSED_OFFSET_W)
-			rc_sent.x_speed=50;
+			rc_sent.x_speed=-110.0f;
 		if(KEY_board & KEY_PRESSED_OFFSET_S)
-			rc_sent.x_speed=-50;
+			rc_sent.x_speed=110.0f;
 		if(KEY_board & KEY_PRESSED_OFFSET_A)
-			rc_sent.y_speed=-50;
+			rc_sent.y_speed=110.0f;
 		if(KEY_board & KEY_PRESSED_OFFSET_D)
-			rc_sent.y_speed=50;
-		rc_sent.yaw.target_angle=limits_change(KEY_YAW_ANGLE_MAXX_RUN,KEY_YAW_ANGLE_MINN_RUN,MOUSE_x,KEY_MAXX,KEY_MINN);
-		if (Gimbal_Precision_Mode == 0)
-			rc_sent.pitch.target_angle=limits_change(KEY_PITCH_ANGLE_MAXX_RUN,KEY_PITCH_ANGLE_MINN_RUN,MOUSE_y,KEY_MAXX,KEY_MINN);
-		else rc_sent.pitch.target_angle=limits_change(KEY_PITCH_ANGLE_MAXX_RUN,KEY_PITCH_ANGLE_MINN_RUN,MOUSE_z,KEY_MAXX,KEY_MINN);
+			rc_sent.y_speed=-110.0f;
+			rc_sent.yaw.target_angle=limits_change(KEY_YAW_ANGLE_MAXX_RUN,KEY_YAW_ANGLE_MINN_RUN,MOUSE_x,KEY_MAXX,KEY_MINN);
+		
+			rc_sent.pitch.target_angle=
+		limits_change(KEY_PITCH_ANGLE_MAXX_RUN,KEY_PITCH_ANGLE_MINN_RUN,MOUSE_y,KEY_MAXX,KEY_MINN);
+		
 	}
 	else
 	{
@@ -112,10 +98,9 @@ void key_control_data(void)
 			rc_sent.y_speed=KEY_Y_SPEED_MINN;
 		if(KEY_board & KEY_PRESSED_OFFSET_D)
 			rc_sent.y_speed=KEY_Y_SPEED_MAXX;
-		rc_sent.yaw.target_angle=limits_change(KEY_YAW_ANGLE_MAXX_ON,KEY_YAW_ANGLE_MINN_ON,MOUSE_x,KEY_MAXX,KEY_MINN);
-		if (Gimbal_Precision_Mode == 0)
+			rc_sent.yaw.target_angle=limits_change(KEY_YAW_ANGLE_MAXX_ON,KEY_YAW_ANGLE_MINN_ON,MOUSE_x,KEY_MAXX,KEY_MINN);
+			
 			rc_sent.pitch.target_angle=limits_change(KEY_PITCH_ANGLE_MAXX_ON,KEY_PITCH_ANGLE_MINN_ON,MOUSE_y,KEY_MAXX,KEY_MINN);
-		else rc_sent.pitch.target_angle=limits_change(KEY_PITCH_ANGLE_MAXX_ON,KEY_PITCH_ANGLE_MINN_ON,MOUSE_z,KEY_MAXX,KEY_MINN);
 	}
 	
 	//Ctrl+R键底盘随动开关
@@ -127,7 +112,8 @@ void key_control_data(void)
 			{
 				Chassis_Spin_Delay_Cnt = 100;
 				
-				CAN_COMM_T_MODE(0,3,3);//随动模式
+				tray_mode.mode_s1 = 3;//随动
+				tray_mode.mode_s2 = 3;
 			}
 		}
 	}
@@ -138,7 +124,9 @@ void key_control_data(void)
 		{
 			Chassis_Spin_Delay_Cnt = 100;
 			
-			CAN_COMM_T_MODE(0,2,3);//小陀螺模式
+				tray_mode.mode_s1 = 3;//小陀螺
+				tray_mode.mode_s2 = 2;
+			
 		}
 	}
 	
@@ -151,26 +139,44 @@ void key_control_data(void)
 			if (Fric_Switch_Flag == 0) Fric_Switch_Flag=1;
 			else if (Fric_Switch_Flag == 1) Fric_Switch_Flag=0;
 			
-			shoot.fric_speedset = -SHOOT_FRIC_HIGH_SPEED*Fric_Switch_Flag;
+			rc_shoot.left_fric.target_speed = SHOOT_FRIC_HIGH_SPEED*Fric_Switch_Flag;
 		   
 			
 			Fric_Switch_Delay_Cnt = 100;
 		}
 	}
 	//发射及发射延迟
-	if( MOUSE_pre_left==1   ) 
-    {			
-		if (Fric_Switch_Flag)
+			
+				
+		if (Fric_Switch_Flag == 1&&flag_cnt == 2&&MOUSE_pre_left==1)
 		{
-			rc_shoot.trigger.target_angle= 1 ;//shoot_num == 1
-			rc_shoot.trigger.last_shoot_flag= 1 ;
-			shoot_true=0 ;
+			flag_cnt = 1;
 			Shoot_Num++ ;
+			
 		}
-		else rc_shoot.trigger.target_angle=0;
 		
-		trigger_task(rc_shoot.trigger.target_angle);
-	}
+		if (Fric_Switch_Flag == 1&&flag_cnt == 1&&MOUSE_pre_left==0)
+		{
+			flag_cnt = 2;
+			
+		}
+		
+		
+		if(Shoot_Num%2 != 0)
+		  {  
+			  rc_shoot.tirgg_flag  = 1;
+			
+		  }
+		if(Shoot_Num%2 == 0)
+		  {  
+			  rc_shoot.tirgg_flag = 0;
+			
+		  }
+		
+		
+		
+		tray_mode.tray = rc_shoot.tirgg_flag;
+		
 	if(MOUSE_pre_left==0) 
 	{
 		MOUSE_pre_left_cnt++;
@@ -180,8 +186,8 @@ void key_control_data(void)
     
 	
 	
-
-	if(KEY_PRESSED_OFFSET_B&KEY_board)
+	
+	if(KEY_PRESSED_OFFSET_B&KEY_board)//
 	{
 		if (Gimbal_Precision_Mode_Delay_Cnt == 0) 
 		{
@@ -193,6 +199,17 @@ void key_control_data(void)
 			Gimbal_Precision_Mode_Delay_Cnt = 100;
 		}
 	}
+	//视觉模式
+	if(KEY_PRESSED_OFFSET_F&KEY_board)
+	{
+		if (Vision_Precision_Mode==1) Vision_Precision_Mode = 0;
+			else Vision_Precision_Mode = 1;
+		if(Vision_Precision_Mode==1)
+			vision_mode = VISION_ON;
+		else
+			vision_mode = VISION_OFF;
+	}
+	
 //	if(KEY_PRESSED_OFFSET_F&KEY_board)
 //	{
 //		if (Pitch_Calibration_Delay_Cnt == 0) 

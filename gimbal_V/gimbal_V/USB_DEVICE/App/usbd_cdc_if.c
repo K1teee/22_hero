@@ -455,8 +455,10 @@ void cdc_vcp_data_rx (uint8_t *buf, uint32_t Len)
 			}
 			if(start_receive_flag == 1)//????
 			{   
+				
 				vision_sent.yaw.target_angle =(float)((int16_t)((receive_data[1]<<8)|(receive_data[0])))/100.0f;
 				vision_sent.pitch.target_angle =(float)((int16_t)((receive_data[3]<<8)|(receive_data[2])))/100.0f;
+				
 				//front
 				vision_sent.chassis.target_x = (float)((int16_t)(receive_data[5]<<8|receive_data[4]));
 				//go_left

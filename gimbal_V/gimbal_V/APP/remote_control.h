@@ -23,8 +23,8 @@
 
 /* ----------------------- RC Switch Definition----------------------------- */
 
-#define SW_L                    rc_ctrl.rc.s[1]
-#define SW_R                    rc_ctrl.rc.s[0]
+#define SW_L                    rc_data.rc.s[1]
+#define SW_R                    rc_data.rc.s[0]
 #define RC_SW_UP                ((uint16_t)1)
 #define RC_SW_MID               ((uint16_t)3)
 #define RC_SW_DOWN              ((uint16_t)2)
@@ -33,12 +33,12 @@
 #define switch_is_up(s)         (s == RC_SW_UP)
 
 /* ----------------------- PC Key Definition-------------------------------- */
-#define MOUSE_x               rc_ctrl.mouse.x     
-#define MOUSE_y               rc_ctrl.mouse.y
-#define MOUSE_z               rc_ctrl.mouse.z
-#define MOUSE_pre_left        rc_ctrl.mouse.press_l
-#define MOUSE_pre_right       rc_ctrl.mouse.press_r
-#define KEY_board             rc_ctrl.key.v
+#define MOUSE_x               rc_data.mouse.x     
+#define MOUSE_y               rc_data.mouse.y
+#define MOUSE_z               rc_data.mouse.z
+#define MOUSE_pre_left        rc_data.mouse.press_l
+#define MOUSE_pre_right       rc_data.mouse.press_r
+#define KEY_board             rc_data.key.v
 
 #define KEY_PRESSED_NULL                ((uint16_t)0     )
 #define KEY_PRESSED_OFFSET_W            ((uint16_t)1 << 0)
@@ -111,5 +111,7 @@ extern RC_ctrl_t global_ctrl;
 extern int Transmission_Mode;
 void remote_control_init(void);
 void RC_IRQHandler(void);
+extern void lose_task(void);
+
 
 #endif

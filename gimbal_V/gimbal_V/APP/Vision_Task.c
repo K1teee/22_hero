@@ -19,8 +19,8 @@ void Vision_Task()
 	chassis_tx.z_target =  vision_sent.chassis.target_z;
 	
 	gimbal_ctrl_loop(&gimbal_move);//云台电机闭环控制
-	CAN_CMD_GIMBAL(gimbal_move.motor_gimbal[1].give_current,gimbal_move.motor_gimbal[2].give_current,gimbal_move.motor_gimbal[3].give_current);
-	CANTX_YAW_TARGET(chassis_tx.yaw_target);		
+	CAN_CMD_GIMBAL(gimbal_move.motor_gimbal[1].give_current,0,0);
+	CAN_COMM_T(chassis_tx.yaw_target);		
 }
 
 

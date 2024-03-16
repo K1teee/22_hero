@@ -49,3 +49,4 @@ hero_c2\gimbal.o: D:\Keil_5\ARM\ARMCC\Bin\..\include\stdio.h
 hero_c2\gimbal.o: ..\APP\chassis_task.h
 hero_c2\gimbal.o: ../BSP/user_lib.h
 hero_c2\gimbal.o: ../CONPONENT/module/can_comm.h
+hero_c2\gimbal.o: ..\APP\Vision_Task.h

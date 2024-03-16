@@ -21,4 +21,7 @@ typedef enum
 
 extern void mode_select(RC_ctrl_t *rc_data);
 
+extern  void mode_control(void);
+
+
 #endif

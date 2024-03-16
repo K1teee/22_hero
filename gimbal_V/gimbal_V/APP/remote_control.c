@@ -31,7 +31,7 @@ RC_ctrl_t rc_data;
 
 //接收原始数据，为18个字节，给了36个字节长度，防止DMA传输越界
 static uint8_t sbus_rx_buf[2][SBUS_RX_BUF_NUM];
-static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl,RC_ctrl_t *global_ctrl);
+static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl,RC_ctrl_t *rc_data);
 static void RC_init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
 static void RC_restart(uint16_t dma_buf_num);
 
@@ -146,6 +146,25 @@ error:
 	*	@param				none
   * @retval       none
   */
+
+void lose_task(void)
+{
+	 rc_data.rc.ch[0] = 0;
+    rc_data.rc.ch[1] = 0;
+    rc_data.rc.ch[2] = 0;
+    rc_data.rc.ch[3] = 0;
+    rc_data.rc.ch[4] = 0;
+    rc_data.rc.s[0] = 0;
+    rc_data.rc.s[1] = 0;
+    rc_data.mouse.x = 0;
+    rc_data.mouse.y = 0;
+    rc_data.mouse.z = 0;
+    rc_data.mouse.press_l = 0;
+    rc_data.mouse.press_r = 0;
+    rc_data.key.v = 0;
+
+}
+int lose_control ;
 void USART3_IRQHandler(void)
 {
 	if(RC_huart.Instance->SR & UART_FLAG_RXNE)//接收到数据
@@ -177,7 +196,7 @@ void USART3_IRQHandler(void)
 		
 			if(this_time_rx_len == RC_FRAME_LENGTH)
 			{
-				sbus_to_rc(sbus_rx_buf[0], &rc_ctrl,&global_ctrl);
+				sbus_to_rc(sbus_rx_buf[0], &rc_ctrl,&rc_data);
 				if(RC_data_is_error()==1)
 				{
 					RC_restart(SBUS_RX_BUF_NUM);
@@ -206,7 +225,7 @@ void USART3_IRQHandler(void)
 			if(this_time_rx_len == RC_FRAME_LENGTH)
 			{
 				//处理遥控器数据
-				sbus_to_rc(sbus_rx_buf[1], &rc_ctrl,&global_ctrl);
+				sbus_to_rc(sbus_rx_buf[1], &rc_ctrl,&rc_data);
 				if(RC_data_is_error()==1)
 				{
 					RC_restart(SBUS_RX_BUF_NUM);
@@ -214,6 +233,7 @@ void USART3_IRQHandler(void)
 			}
 		}
 	}
+	lose_control = 0;
 }
 
 /**
@@ -246,7 +266,9 @@ static void RC_restart(uint16_t dma_buf_num)
 	*	@param[*global_ctrl]    全局控制的指针
   * @retval    							none
   */
-static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl, RC_ctrl_t *global_ctrl)
+
+
+static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl, RC_ctrl_t *rc_data)
 {
 	if (sbus_buf == NULL || rc_ctrl == NULL)
 	{
@@ -261,15 +283,14 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl, RC_
 	rc_ctrl->rc.s[0] = ((sbus_buf[5] >> 4) & 0x0003); //左拨杆 -+
 	rc_ctrl->rc.s[1] = ((sbus_buf[5] >> 4) & 0x000C) >> 2; //右拨杆 -+
 	
-	if (Transmission_Mode == Transmission_Mode_OFF)
-	{
+	
 		rc_ctrl->mouse.x = sbus_buf[6] | (sbus_buf[7] << 8); //鼠标x轴坐标
 		rc_ctrl->mouse.y = sbus_buf[8] | (sbus_buf[9] << 8); //鼠标y轴坐标
 		rc_ctrl->mouse.z = sbus_buf[10] | (sbus_buf[11] << 8);//鼠标z轴坐标
 		rc_ctrl->mouse.press_l = sbus_buf[12]; //鼠标左键按下1
 		rc_ctrl->mouse.press_r = sbus_buf[13]; //鼠标右键按下1
 		rc_ctrl->key.v = sbus_buf[14] | (sbus_buf[15] << 8); //键盘键值
-	}	
+		
 
 	rc_ctrl->rc.ch[0] -= 1024;
 	rc_ctrl->rc.ch[1] -= 1024;
@@ -277,13 +298,15 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl, RC_
 	rc_ctrl->rc.ch[3] -= 1024;
 	rc_ctrl->rc.ch[4] -= 1024;
 	
-	if(rc_ctrl->rc.s[1] == 1)
-	{
-		
-	}
-	else
-	{
-		global_ctrl->rc = rc_ctrl->rc;
-	}
-		
+//	if(rc_ctrl->rc.s[1] == 1 && rc_ctrl->rc.s[0] == 1)
+//	{
+//		
+//	}
+//	else
+//	{
+		rc_data->rc = rc_ctrl->rc;
+		rc_data->mouse = rc_ctrl->mouse;
+		rc_data->key = rc_ctrl->key;
+//	}
+//		
 }

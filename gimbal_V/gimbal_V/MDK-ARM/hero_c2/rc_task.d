@@ -49,3 +49,4 @@ hero_c2\rc_task.o: ../Core/Inc/main.h
 hero_c2\rc_task.o: ../BSP/math.h
 hero_c2\rc_task.o: ..\APP\Vision_Task.h
 hero_c2\rc_task.o: ../CONPONENT/module/can_comm.h
+hero_c2\rc_task.o: ../CONPONENT/module/mode.h

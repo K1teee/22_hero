@@ -118,12 +118,12 @@ int main(void)
 	can_filter_init();
 	gimbal_init(&gimbal_move);
   
-  HAL_TIM_Base_Start(&htim10);
-  HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
-  delay_init(); 
-  IMU_Init();
+	HAL_TIM_Base_Start(&htim10);
+	HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
+	delay_init(); 
+	IMU_Init();
 
-  HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start_IT(&htim2);
 	HAL_TIM_Base_Start_IT(&htim3);
   
   /* USER CODE END 2 */
@@ -131,7 +131,8 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  while (1)
+
+	while (1)
   {
 	
     /* USER CODE END WHILE */

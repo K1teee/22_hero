@@ -14,22 +14,22 @@
 //角度环输出死区
 #define DEADBAND_ANGLEPID_OUT 30.0f
 //pitch的角度环输出死区
-#define DEADBAND_p_ANGLEPID_OUT 100.0f
+#define DEADBAND_p_ANGLEPID_OUT 3000.0f
 
 //速度环kpkikd
-#define PITCH_SPEED_KP 10.0f
-#define PITCH_SPEED_KI 0.0f
-#define PITCH_SPEED_KD 20.0f
-#define PITCH_SPEED_PID_MAX_OUT 12000.0f
-#define PITCH_SPEED_PID_MAX_IOUT 6000.0f
+#define PITCH_SPEED_KP 14.0f//12000.0f
+#define PITCH_SPEED_KI 0.05f//500.0f
+#define PITCH_SPEED_KD 7.0f//5000.0f
+#define PITCH_SPEED_PID_MAX_OUT 12000.0f//3000.0f
+#define PITCH_SPEED_PID_MAX_IOUT 6000.0f//700.0f
+
+#define IMU_SPEED_KP 1500.0f
+#define IMU_SPEED_KI 50.0f
+#define IMU_SPEED_KD 0.0f
+#define IMU_SPEED_PID_MAX_OUT 6000.0f
+#define IMU_SPEED_PID_MAX_IOUT 500.0f
 
 #define FRIC_SPEED_PID_MAX_OUT 16000.0f
-
-#define YAW_SPEED_KP 50.0f
-#define YAW_SPEED_KI 2.8f
-#define YAW_SPEED_KD 28.0f
-#define YAW_SPEED_PID_MAX_OUT 25000.0f
-#define YAW_SPEED_PID_MAX_IOUT 10000.0f
 
 //角度环kpkikd
 #define PITCH_ANGLE_KP 4.0f
@@ -38,13 +38,17 @@
 #define PITCH_ANGLE_PID_MAX_IOUT 1500.0f
 #define PITCH_ANGLE_PID_MAX_OUT 1500.0f
 
-#define YAW_ANGLE_KP 0.6f
-#define YAW_ANGLE_KI 0.1f
-#define YAW_ANGLE_KD 0.35f
-#define YAW_ANGLE_PID_MAX_IOUT 0.2f
-#define YAW_ANGLE_PID_MAX_OUT 60.0f
+#define P_IMU_ANGLE_KP 20.0f
+#define P_IMU_ANGLE_KI 40.0f
+#define P_IMU_ANGLE_KD 0.0f
+#define P_IMU_ANGLE_PID_MAX_IOUT 0.0f
+#define P_IMU_ANGLE_PID_MAX_OUT 240.0f
 
 #define SHOOT_FRIC_HIGH_SPEED 5700.0f
+
+
+#define left_f 0
+#define right_f 1
 
 typedef struct
 {
@@ -55,9 +59,14 @@ typedef struct
 
 typedef struct
 {
-  const RC_ctrl_t *gimbal_RC;               //云台使用的遥控器指针
+    const RC_ctrl_t *gimbal_RC;               //云台使用的遥控器指针
   
-  gimbal_motor_t motor_gimbal[5];          //云台电机数据
+	pid_type_def imu_angle_pid[4];
+	
+	pid_type_def imu_speed_pid[4];
+  
+	
+	gimbal_motor_t motor_gimbal[5];          //云台电机数据
   
 	pid_type_def motor_speed_pid[4];             //云台电机速度pid
  
@@ -79,6 +88,9 @@ typedef struct
   fp32 offset_y;//yaw零点
 
   fp32 fric_speedset;
+  
+  fp32 imu_angle_pitch;
+  fp32 imu_speed_pitch;
 } gimbal_move_t;
 
 
@@ -100,13 +112,17 @@ typedef struct
 {
 	fp32 IMU_actualangle;
 	
-	pid_type_def imu_pid[4];
+	fp32 IMU_actualspeed;
+	
+	pid_type_def imu_angle_pid[4];
 	
 	const RC_ctrl_t *gimbal_RC;               
   
   gimbal_motor_t motor_gimbal[1];          
   
-	pid_type_def motor_speed_pid[1];            
+	pid_type_def motor_speed_pid[1];
+	
+	pid_type_def imu_speed_pid[1];  	
  
 	pid_type_def motor_angle_pid[1];          
 	
@@ -173,6 +189,7 @@ typedef struct{
 	fric_t right_fric;
 	
 	trigger_t trigger;
+	fp32 tirgg_flag;
 }shoot_task_t;
 
 extern void gimbal_init(gimbal_move_t *gimbal_init);
@@ -193,7 +210,9 @@ extern void fric_task(void);
 
 extern void pitch_task(void);
 
-extern void trigger_task(int16_t trigger_flag);
+extern void shoot_task(void);
+
+extern void gimbal_task(void);
 
 
 #endif
